@@ -1,99 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rompecabezas de Números</title>
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f0f0f0;
-        margin: 0;
-      }
-      .puzzle-container {
-        display: grid;
-        grid-template-columns: repeat(5, 100px);
-        grid-template-rows: repeat(4, 100px);
-        gap: 5px;
-      }
-      .puzzle-piece {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-        height: 100px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        font-size: 24px;
-        cursor: pointer;
-      }
-      .empty {
-        background-color: #f0f0f0;
-        border: none;
-      }
-    </style>
+    <title>Document</title>
   </head>
   <body>
-    <div class="puzzle-container" id="puzzle-container">
-      <!-- Las piezas del rompecabezas se generarán aquí -->
-    </div>
-
-    <script>
-      const puzzleContainer = document.getElementById("puzzle-container");
-      const rows = 4;
-      const cols = 5;
-      let pieces = [];
-
-      function createPuzzle() {
-        pieces = Array.from({ length: rows * cols }, (_, i) => i + 1);
-        pieces[rows * cols - 1] = ""; // La última pieza es el espacio vacío
-        shuffle(pieces);
-        renderPuzzle();
-      }
-
-      function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-      }
-
-      function renderPuzzle() {
-        puzzleContainer.innerHTML = "";
-        pieces.forEach((piece, index) => {
-          const pieceElement = document.createElement("div");
-          pieceElement.className = "puzzle-piece";
-          if (piece === "") {
-            pieceElement.classList.add("empty");
-          } else {
-            pieceElement.textContent = piece;
-            pieceElement.addEventListener("click", () => movePiece(index));
-          }
-          puzzleContainer.appendChild(pieceElement);
-        });
-      }
-
-      function movePiece(index) {
-        const emptyIndex = pieces.indexOf("");
-        const validMoves = [
-          emptyIndex - 1,
-          emptyIndex + 1,
-          emptyIndex - cols,
-          emptyIndex + cols,
-        ];
-        if (validMoves.includes(index)) {
-          [pieces[emptyIndex], pieces[index]] = [
-            pieces[index],
-            pieces[emptyIndex],
-          ];
-          renderPuzzle();
-        }
-      }
-
-      createPuzzle();
-    </script>
+    <img src="./MagoDeOz/fila-1-columna-2.jpg" alt="Imagen de prueba" />
   </body>
 </html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rompecabezas</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        background-color: #f0f0f0;
+        flex-direction: column;
+        overflow-y: auto;
+        font-family: "Arial", sans-serif;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #333;
+      }
+      p {
+        text-align: center;
+        color: #666;
+      }
+      .contenedor {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .contenedor-piezas,
+      .contenedor-rompecabezas {
+        display: grid;
+        grid-template-columns: repeat(5, 100px);
+        grid-template-rows: repeat(4, 100px);
+        gap: 5px;
+        padding: 10px;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .pieza {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 100px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        font-size: 24px;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s;
+      }
+      .pieza:hover {
+        transform: scale(1.05);
+      }
+      .vacio {
+        background-color: #e0e0e0;
+        border: 1px dashed #ccc;
+      }
+      .seleccionada {
+        outline: 3px solid blue;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+      }
+      footer {
+        margin-top: 50px;
+        text-align: center;
+        width: 100%;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="padding: 100px; padding-top: 500px">
+      <div style="display: flex; justify-content: center; gap: 20px">
+        <div style="height: 400px; width: 400px">
+          <h1>Bienvenido</h1>
+          <p>
+            Para jugar haz click en una imagen y luego da click nuevamente en
+            cualquier cuadricula para colocarla, para eliminar una pieza ya
+            hecha da doble click
+          </p>
+        </div>
+        <div style="height: 400px; width: 400px">
+          <img src="./MagoDeOz/MagoDeOz.jpeg" alt="Imagen original" />
+          <div style="text-align: center; margin-top: 10px">
+            Imagen original
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <div class="contenedor">
+        <div
+          class="contenedor-piezas"
+          id="contenedor-piezas"
+          style="margin-right: 100px"
+        ></div>
+        <div class="contenedor-rompecabezas" id="contenedor-rompecabezas"></div>
+      </div>
+    </div>
+
+    <footer>Hecho por: Isaac Avila Saenz (232825) y Ashley...</footer>
+
+    <script>
+      const contenedorPiezas = document.getElementById("contenedor-piezas");
+      const contenedorRompecabezas = document.getElementById(
+        "contenedor-rompecabezas"
+      );
+      const filas = 4,
+        columnas = 5;
+      let piezaSeleccionada = null;
+
+      function iniciarRompecabezas() {
+        const piezas = Array.from({ length: filas * columnas }, (_, i) => {
+          const fila = Math.floor(i / columnas) + 1;
+          const columna = (i % columnas) + 1;
+          return `${fila}${columna}`;
+        });
+        mezclarArray(piezas);
+        generarPiezas(piezas);
+        generarEspaciosVacios();
+      }
+
+      // Mezcla aleatoriamente las piezas
+      function mezclarArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      // Genera las piezas en el lado izquierdo desordenadas
+      function generarPiezas(piezas) {
+        contenedorPiezas.innerHTML = "";
+        piezas.forEach((numero) => {
+          const pieza = crearPieza(numero);
+          contenedorPiezas.appendChild(pieza);
+        });
+      }
+
+      // Crea una pieza con su imagen
+      function crearPieza(numero) {
+        const pieza = document.createElement("div");
+        pieza.className = "pieza";
+        const imagen = document.createElement("img");
+
+        imagen.src = `./MagoDeOz/${numero}.jpg`; // Usar el número de pieza generado
+        imagen.alt = `pieza${numero}`;
+        imagen.width = 100;
+        imagen.height = 100;
+
+        pieza.appendChild(imagen);
+        pieza.addEventListener("click", seleccionarPieza);
+        return pieza;
+      }
+
+      // Genera los espacios vacíos en el rompecabezas
+      function generarEspaciosVacios() {
+        contenedorRompecabezas.innerHTML = "";
+        for (let i = 0; i < filas * columnas; i++) {
+          const espacio = document.createElement("div");
+          espacio.className = "pieza vacio";
+          espacio.addEventListener("click", colocarPieza);
+          espacio.addEventListener("dblclick", eliminarPieza);
+          contenedorRompecabezas.appendChild(espacio);
+        }
+      }
+
+      // Marca una imagen como seleccionada
+      function seleccionarPieza(evento) {
+        if (piezaSeleccionada) {
+          document
+            .querySelectorAll(".seleccionada")
+            .forEach((el) => el.classList.remove("seleccionada"));
+        }
+        piezaSeleccionada = evento.currentTarget;
+        piezaSeleccionada.classList.add("seleccionada");
+      }
+
+      // Coloca una copia de la imagen en el tablero y la elimina del lado izquierdo
+      function colocarPieza(evento) {
+        if (!piezaSeleccionada) return;
+
+        const espacio = evento.currentTarget;
+        if (espacio.children.length === 0) {
+          const nuevaImagen = document.createElement("img");
+          nuevaImagen.src = piezaSeleccionada.firstChild.src;
+          nuevaImagen.width = 100;
+          nuevaImagen.height = 100;
+          espacio.appendChild(nuevaImagen);
+
+          piezaSeleccionada.remove();
+          piezaSeleccionada = null;
+
+          comprobarVictoria();
+        }
+      }
+
+      // Elimina la imagen con doble clic y la regresa al lado izquierdo
+      function eliminarPieza(evento) {
+        if (evento.currentTarget.children.length > 0) {
+          const imagenSrc = evento.currentTarget.firstChild.src;
+          evento.currentTarget.innerHTML = ""; // Elimina la imagen
+
+          // Crear y regresar la pieza eliminada al lado izquierdo
+          const numeroPieza = imagenSrc.split("/").pop().split(".")[0];
+          const nuevaPieza = crearPieza(numeroPieza);
+          contenedorPiezas.appendChild(nuevaPieza);
+        }
+      }
+
+      // Comprobar si todas las piezas están en su lugar
+      function comprobarVictoria() {
+        const espacios = document.querySelectorAll(
+          ".contenedor-rompecabezas .pieza"
+        );
+        const todasEnSuLugar = Array.from(espacios).every((espacio, index) => {
+          const imagen = espacio.querySelector("img");
+          if (!imagen) return true;
+
+          const numeroEsperado = index + 1; // El número esperado sería el índice de la pieza (1-20)
+          const imagenSrc = imagen.src.split("/").pop().split(".")[0]; // Obtener el número de la imagen
+
+          return imagenSrc === `${numeroEsperado}`; // Comparar con el número esperado
+        });
+
+        if (todasEnSuLugar) {
+          alert("¡Felicidades, has completado el rompecabezas!");
+        }
+      }
+
+      iniciarRompecabezas();
+    </script>
+  </body>
+</html>
