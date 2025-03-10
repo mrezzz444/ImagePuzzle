@@ -93,52 +93,74 @@
       }
     </style>
   </head>
-  <body>
-    <center>     
+  <body onchange="cambiarImagen()">
+    <center>
       <div style="padding: 100px; padding-top: 500px">
         <div style="display: flex; justify-content: center; gap: 20px">
           <div style="height: 400px; width: 400px">
             <h1>Bienvenido</h1>
-            <br>
+            <br />
             <p>
               Para jugar haz click en una imagen y luego da click nuevamente en
               cualquier cuadricula para colocarla, para eliminar una pieza ya
               hecha da doble click
             </p>
           </div>
-          <br> <br><br>
-          <div class="contenedor-imagen" style="height: 400px; width: 400px">
-            <img id="imagen-original" src="./MagoDeOz/MagoDeOz.jpeg" alt="Imagen original" /> 
+          <br />
+          <br /><br />
+          <div
+            class="contenedor-imagen"
+            style="height: 400px; width: 400px; margin-left: 85px"
+          >
+            <img
+              id="imagen-original"
+              src="./MagoDeOz/MagoDeOz.jpg"
+              alt="Imagen original"
+            />
             <div style="text-align: center; margin-top: 10px">
               Imagen original
             </div>
           </div>
         </div>
 
-        <div style="text-align: left; margin-top: 10px">
+        <div style="text-align: left; margin-top: 10px; margin: left 100px">
           <label for="seleccion-imagen">Seleccionar imagen:</label>
-          <select id="seleccion-imagen" style="border-radius: 20px; padding: 8px 15px; font-size: 16px;">
+          <select
+            id="seleccion-imagen"
+            style="border-radius: 20px; padding: 8px 15px; font-size: 16px"
+          >
             <option value="MagoDeOz">Mago de Oz</option>
             <option value="Conejo">Conejo</option>
             <option value="Miku">Miku</option>
           </select>
-          <button onclick="cambiarImagen()" style="border-radius: 13px; padding: 10px 13px; font-size: 12px; margin-left: 13px; cursor: pointer; border: #e3e4a1;">
+          <button
+            onclick="cambiarImagen()"
+            style="
+              border-radius: 13px;
+              padding: 10px 13px;
+              font-size: 12px;
+              margin-left: 13px;
+              cursor: pointer;
+              border: #e3e4a1;
+            "
+          >
             Cargar
           </button>
         </div>
-        
-        
-    </center>
-      <br />
-      <div class="contenedor">
-        <div
-          class="contenedor-piezas"
-          id="contenedor-piezas"
-          style="margin-right: 100px"
-        ></div>
-        <div class="contenedor-rompecabezas" id="contenedor-rompecabezas"></div>
+        <br />
+        <div class="contenedor">
+          <div
+            class="contenedor-piezas"
+            id="contenedor-piezas"
+            style="margin-right: 100px"
+          ></div>
+          <div
+            class="contenedor-rompecabezas"
+            id="contenedor-rompecabezas"
+          ></div>
+        </div>
       </div>
-    </div>
+    </center>
 
     <footer>
       Hecho por: Isaac Avila Saenz (232825) y Ashley Paulina Dominguez Ruiz
@@ -158,11 +180,10 @@
       function cambiarImagen() {
         const select = document.getElementById("seleccion-imagen");
         carpetaSeleccionada = select.value;
-        
-        const imagenOriginal = document.getElementById("imagen-original");
-        imagenOriginal.src= `./${carpetaSeleccionada}/${carpetaSeleccionada}.jpg`;
 
-        
+        const imagenOriginal = document.getElementById("imagen-original");
+        imagenOriginal.src = `./${carpetaSeleccionada}/${carpetaSeleccionada}.jpg`;
+
         iniciarRompecabezas();
       }
 
@@ -246,8 +267,6 @@
 
           piezaSeleccionada.remove();
           piezaSeleccionada = null;
-
-          comprobarVictoria();
         }
       }
 
@@ -261,26 +280,6 @@
           const numeroPieza = imagenSrc.split("/").pop().split(".")[0];
           const nuevaPieza = crearPieza(numeroPieza);
           contenedorPiezas.appendChild(nuevaPieza);
-        }
-      }
-
-      // Comprobar si todas las piezas están en su lugar
-      function comprobarVictoria() {
-        const espacios = document.querySelectorAll(
-          ".contenedor-rompecabezas .pieza"
-        );
-        const todasEnSuLugar = Array.from(espacios).every((espacio, index) => {
-          const imagen = espacio.querySelector("img");
-          if (!imagen) return true;
-
-          const numeroEsperado = index + 1; // El número esperado sería el índice de la pieza (1-20)
-          const imagenSrc = imagen.src.split("/").pop().split(".")[0]; // Obtener el número de la imagen
-
-          return imagenSrc === `${numeroEsperado}`; // Comparar con el número esperado
-        });
-
-        if (todasEnSuLugar) {
-          alert("¡Felicidades, has completado el rompecabezas!");
         }
       }
 
