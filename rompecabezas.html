@@ -11,11 +11,11 @@
         box-sizing: border-box;
       }
       body {
+        background-color: #a8c2ed;
         display: flex;
         justify-content: center;
         align-items: flex-start;
         height: 100vh;
-        background-color: #f0f0f0;
         flex-direction: column;
         overflow-y: auto;
         font-family: "Arial", sans-serif;
@@ -23,11 +23,11 @@
       h1 {
         text-align: center;
         margin-top: 20px;
-        color: #333;
+        color: #28323f;
       }
       p {
         text-align: center;
-        color: #666;
+        color: #403939;
       }
       .contenedor {
         display: flex;
@@ -43,8 +43,8 @@
         grid-template-rows: repeat(4, 100px);
         gap: 5px;
         padding: 10px;
-        background-color: #fff;
-        border: 2px solid #ccc;
+        background-color: #e3e4a1;
+        border: 2px solid #d7d965;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
@@ -82,6 +82,15 @@
         width: 100%;
         color: #666;
       }
+      /* Estilos para el contenedor de la imagen */
+      .contenedor-imagen {
+        border: 3px solid #e3e4a1;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background-color: #e3e4a1;
+      }
     </style>
   </head>
   <body>
@@ -90,13 +99,15 @@
         <div style="display: flex; justify-content: center; gap: 20px">
           <div style="height: 400px; width: 400px">
             <h1>Bienvenido</h1>
+            <br>
             <p>
               Para jugar haz click en una imagen y luego da click nuevamente en
               cualquier cuadricula para colocarla, para eliminar una pieza ya
               hecha da doble click
             </p>
           </div>
-          <div style="height: 400px; width: 400px">
+          <br> <br><br>
+          <div class="contenedor-imagen" style="height: 400px; width: 400px">
             <img id="imagen-original" src="./MagoDeOz/MagoDeOz.jpeg" alt="Imagen original" /> 
             <div style="text-align: center; margin-top: 10px">
               Imagen original
@@ -104,15 +115,18 @@
           </div>
         </div>
 
-        <div style="text-align: left; margin-top: 20px">
+        <div style="text-align: left; margin-top: 10px">
           <label for="seleccion-imagen">Seleccionar imagen:</label>
-          <select id="seleccion-imagen">
+          <select id="seleccion-imagen" style="border-radius: 20px; padding: 8px 15px; font-size: 16px;">
             <option value="MagoDeOz">Mago de Oz</option>
             <option value="Conejo">Conejo</option>
             <option value="Miku">Miku</option>
           </select>
-          <button onclick="cambiarImagen()">Cargar</button>
+          <button onclick="cambiarImagen()" style="border-radius: 13px; padding: 10px 13px; font-size: 12px; margin-left: 13px; cursor: pointer; border: #e3e4a1;">
+            Cargar
+          </button>
         </div>
+        
         
     </center>
       <br />
@@ -141,13 +155,13 @@
       let piezaSeleccionada = null;
 
       let carpetaSeleccionada = "MagoDeOz"; //carpeta que estara por default
-
       function cambiarImagen() {
         const select = document.getElementById("seleccion-imagen");
         carpetaSeleccionada = select.value;
         
         const imagenOriginal = document.getElementById("imagen-original");
         imagenOriginal.src= `./${carpetaSeleccionada}/${carpetaSeleccionada}.jpg`;
+
         
         iniciarRompecabezas();
       }
