@@ -85,24 +85,36 @@
     </style>
   </head>
   <body>
-    <div style="padding: 100px; padding-top: 500px">
-      <div style="display: flex; justify-content: center; gap: 20px">
-        <div style="height: 400px; width: 400px">
-          <h1>Bienvenido</h1>
-          <p>
-            Para jugar haz click en una imagen y luego da click nuevamente en
-            cualquier cuadricula para colocarla, para eliminar una pieza ya
-            hecha da doble click
-          </p>
-        </div>
-        <div style="height: 400px; width: 400px">
-          <img src="./MagoDeOz/MagoDeOz.jpeg" alt="Imagen original" />
-          <div style="text-align: center; margin-top: 10px">
-            Imagen original
+    <center>     
+      <div style="padding: 100px; padding-top: 500px">
+        <div style="display: flex; justify-content: center; gap: 20px">
+          <div style="height: 400px; width: 400px">
+            <h1>Bienvenido</h1>
+            <p>
+              Para jugar haz click en una imagen y luego da click nuevamente en
+              cualquier cuadricula para colocarla, para eliminar una pieza ya
+              hecha da doble click
+            </p>
+          </div>
+          <div style="height: 400px; width: 400px">
+            <img id="imagen-original" src="./MagoDeOz/MagoDeOz.jpeg" alt="Imagen original" /> 
+            <div style="text-align: center; margin-top: 10px">
+              Imagen original
+            </div>
           </div>
         </div>
-      </div>
 
+        <div style="text-align: left; margin-top: 20px">
+          <label for="seleccion-imagen">Seleccionar imagen:</label>
+          <select id="seleccion-imagen">
+            <option value="MagoDeOz">Mago de Oz</option>
+            <option value="Conejo">Conejo</option>
+            <option value="Miku">Miku</option>
+          </select>
+          <button onclick="cambiarImagen()">Cargar</button>
+        </div>
+        
+    </center>
       <br />
       <div class="contenedor">
         <div
@@ -114,7 +126,10 @@
       </div>
     </div>
 
-    <footer>Hecho por: Isaac Avila Saenz (232825) y Ashley...</footer>
+    <footer>
+      Hecho por: Isaac Avila Saenz (232825) y Ashley Paulina Dominguez Ruiz
+      (225751)
+    </footer>
 
     <script>
       const contenedorPiezas = document.getElementById("contenedor-piezas");
@@ -124,6 +139,18 @@
       const filas = 4,
         columnas = 5;
       let piezaSeleccionada = null;
+
+      let carpetaSeleccionada = "MagoDeOz"; //carpeta que estara por default
+
+      function cambiarImagen() {
+        const select = document.getElementById("seleccion-imagen");
+        carpetaSeleccionada = select.value;
+        
+        const imagenOriginal = document.getElementById("imagen-original");
+        imagenOriginal.src= `./${carpetaSeleccionada}/${carpetaSeleccionada}.jpeg`;
+        
+        iniciarRompecabezas();
+      }
 
       function iniciarRompecabezas() {
         const piezas = Array.from({ length: filas * columnas }, (_, i) => {
@@ -159,7 +186,7 @@
         pieza.className = "pieza";
         const imagen = document.createElement("img");
 
-        imagen.src = `./MagoDeOz/${numero}.jpg`; // CAMBIAR AQUI PARA CAMBIA DE IMAGEN
+        imagen.src = `./${carpetaSeleccionada}/${numero}.jpg`; // CAMBIAR AQUI PARA CAMBIA DE IMAGEN, listo
         imagen.alt = `pieza${numero}`;
         imagen.width = 100;
         imagen.height = 100;
