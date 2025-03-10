@@ -44,6 +44,15 @@
     </style>
   </head>
   <body>
+    <label for="image-folder">Seleccionar imagen:</label>
+    <select id="image-folder">
+      <option value="Conejo">Conejo</option>
+      <option value="MagoDeOz">Mago de Oz</option>
+      <option value="Miku">Miku</option>
+    </select>
+    <br />
+    <button onclick="createPuzzle()">Cargar Imagen</button>
+
     <div class="container">
       <div class="pieces-container" id="pieces-container">
         <!-- Las piezas del rompecabezas se generarán aquí -->
@@ -56,9 +65,15 @@
     <script>
       const piecesContainer = document.getElementById("pieces-container");
       const puzzleContainer = document.getElementById("puzzle-container");
+      const imageFolderSelect = document.getElementById("image-folder");
       const rows = 4;
       const cols = 5;
       let pieces = [];
+      let selectedFolder = "Conejo";
+
+      imageFolderSelect.addEventListener("change", (event) => {
+        selectedFolder = event.target.value;
+      });
 
       function createPuzzle() {
         pieces = Array.from({ length: rows * cols }, (_, i) => i + 1);
